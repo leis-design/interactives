@@ -1,0 +1,480 @@
+<style>
+    /* accordion code */
+ .accordion__body {
+  display: block;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: #eee;
+  background: repeating-linear-gradient(
+    -45deg,
+    #fffffc,
+    #fffffc 50px,
+    #f9f9f9 50px,
+    #f9f9f9 100px
+  );
+}
+ .accordion__body::before {
+  content: "EDIT PANEL CONTENT";
+  font-size: x-small;
+  font-weight: 700;
+  position: relative;
+  color: #bbb;
+  top: -1.25em;
+  background: #fffffc;
+  padding: 0.25em 1em;
+  border: 1px solid #ccc;
+  right: -1em;
+}
+.accordion__header {
+	padding: 1em;
+	background-color: #ccc;
+	margin-top: 2px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+}
+.accordion__header > * {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 16px;
+}
+.accordion__header.is-active {
+	background-color: #000;
+	color: #fff;
+}
+
+.accordion__toggle {
+	margin-left: 10px;
+	height: 3px;
+	background-color: #222;
+	width: 13px;
+	display: block;
+	position: relative;
+	flex-shrink: 1;
+	border-radius: 2px;
+}
+
+.accordion__toggle::before {
+	content: "";
+	width: 3px;
+	height: 13px;
+	display: block;
+	background-color: #222;
+	position: absolute;
+	top: -5px;
+	left: 5px;
+	border-radius: 2px;
+}
+
+.is-active .accordion__toggle {
+	background-color: #fff;
+}
+.is-active .accordion__toggle::before {
+	display: none;
+}
+
+
+.accordion__body {
+	display: none;
+	padding: 1em;
+	border: 1px solid #ccc;
+	border-top: 0;
+}
+.accordion__body.is-active {
+	display: block;
+}
+
+
+
+/* carousel code */
+#contenttoshowtable {
+  display: none;
+}
+
+#containercr {
+ 
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  overflow: hidden;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+
+/* Position the "next button" to the right */
+.next {
+  cursor: pointer;
+  position: absolute;
+  width: auto;
+  padding: 16px;
+  margin: 0;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+  background-color: rgba(0, 0, 0, 0.8);
+  right: 0;
+  float: right;
+  border-radius: 3px 0 0 3px;
+}
+
+.prev {
+  cursor: pointer;
+  position: absolute;
+  width: auto;
+  padding: 16px;
+  margin: 0;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+  background-color: rgba(0, 0, 0, 0.8);
+  left: 0;
+  float: left;
+  border-radius: 3px 0 0 3px;
+}
+
+.imgcr {
+  flex: 1;
+  max-width: 100%;
+  height: auto;
+  max-height: 310px;
+}
+
+
+/* code for rounded border */
+.roundedborder {
+  border-radius: 25px;
+  border: 2px solid #4d4d4d;
+  padding: 10px;
+  width: auto;
+  height: auto;
+}
+
+
+/* modal code for the profiles */
+.modal {
+  display: none; /* Hidden by default */
+  position: ab; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: center;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.displaystatus {
+  display: none; /* Hidden by default */
+}
+
+.ccaccordion {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+</style>
+<script>
+    const resizeObserver = new ResizeObserver(entry => {
+
+        if (entry[0].target.offsetWidth < 390) {
+
+            mobileViewCC();
+
+        } else {
+            normalViewCC();
+        }
+
+    });
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+
+        resizeObserver.observe(document.querySelector("#accordionImplement").parentElement);
+
+
+    });
+
+    function mobileViewCC() {
+        $("#accordionImplement").children().eq(0).removeClass("row");
+        $("#accordionImplement .border-0").each(function(i, obj) {
+            obj.classList = "border-0";
+        });
+
+    }
+
+    function normalViewCC() {
+        $("#accordionImplement").children().eq(0).addClass("row");
+        $("#accordionImplement .border-0").each(function(i, obj) {
+            obj.classList = "border-0 col-md-6";
+        });
+
+    }
+</script>
+<h4>Who are we designing for? Review Student Personas
+</h4><br>
+<p class="roundedborder" style="background-color:#efefef;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;<b>Click on the cards below to review each persona.</b></p>
+
+
+<div id="modalmyModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span onclick="spanclick()" class="close">×</span>
+        <div class="displaystatus" id="modal_oneh"><img width="100%" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/p1.PNG" alt="Kim"></div>
+        <div class="displaystatus" id="modal_twoh"><img width="100%" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/p2.PNG" alt="Halima"></div>
+        <div class="displaystatus" id="modal_threeh"><img width="100%" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/p3.PNG" alt="Erica"></div>
+        <div class="displaystatus" id="modal_fourh"><img width="100%" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/p4.PNG" alt="Tobias"></div>
+        <div class="displaystatus" id="modal_fiveh"><img width="100%" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/p5.PNG" alt="Rita"></div>
+        <div class="displaystatus" id="modal_sixh"><img width="100%" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/p6.PNG" alt="Aryan"></div>
+        <div class="displaystatus" id="modal_sevenh"><img width="100%" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/p7.PNG" alt="Alan"></div>
+    </div>
+</div>
+
+<div class="accordion container" id="accordionImplement">
+    <div class="row">
+        <div class="border-0 col-md-6">
+            <div class="m-0 p-0 d-flex flex-column justify-content-between" id="heading_One">
+                <span class="m-0">
+
+                    <img id="modal_one" onclick="showImageModal(this.id)" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/eclass_cc_persona_1%20%281%29.jpg" alt="Kim" width="100%">
+
+                </span>
+                <button class="ccaccordion btn btn-default btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <strong>Takeaways</strong> <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+
+            <div id="collapseOne" class="collapse" aria-labelledby="heading_One" data-parent="#accordionImplement">
+                <p></p>
+                <div class="card-body text-left border border-dark" style="border: 5px solid black;border-radius: 10px;">
+                    <p style="text-align: right;" onclick="closeAcc(this)"> <i class="fa fa-times"></i></p>
+
+                    <ol>
+                        <li>Those who have already entered the working world appear to be more likely to take more initiative to customize their student experience; to go out of their way to seek more dynamic learning opportunities
+                        </li>
+                        <li>It would also appear that even domestic students have a difficult time acclimatizing into Lassonde
+                        </li>
+                    </ol>
+
+                </div>
+            </div>
+            <p></p>
+        </div>
+        <div class="border-0 col-md-6">
+            <div class="m-0 p-0 d-flex flex-column justify-content-between" id="heading_Two">
+                <span class="m-0">
+
+                    <img id="modal_two" onclick="showImageModal(this.id)" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/eclass_cc_persona_2%20%281%29.jpg" alt="Halima" width="100%">
+
+                </span>
+                <button class="ccaccordion btn btn-default btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <strong>Takeaways</strong> <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="heading_Two" data-parent="#accordionImplement">
+                <p></p>
+                <div class="card-body text-left border border-dark" style="border: 5px solid black;border-radius: 10px;">
+                    <p style="text-align: right;" onclick="closeAcc(this)"> <i class="fa fa-times"></i></p>
+                    <ol>
+
+                        <li>The role of transient and/or chronic mental health challenges in a students' experiential journey has significant affects. How could we design to take that into consideration?
+                        </li>
+                        <li>Extra-curriculars and socialization doesn't always led to retention. If the workload is too heavy, students will leave despite the fun they're having
+                        </li>
+                        <li>Should we prioritize exploration even if it means students many leave Lassonde? If so, how?
+                        </li>
+                    </ol>
+
+                </div>
+            </div>
+            <p></p>
+        </div>
+        <div class="w-100"></div>
+        <div class="border-0 col-md-6">
+            <div class="m-0 p-0 d-flex flex-column justify-content-between" id="heading_Three">
+                <span class="m-0">
+
+                    <img id="modal_three" onclick="showImageModal(this.id)" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/eclass_cc_persona_3%20%281%29.jpg" alt="Erica" width="100%">
+
+                </span>
+                <button class="ccaccordion btn btn-default btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                    <strong>Takeaways</strong> <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="heading_Three" data-parent="#accordionImplement">
+                <p></p>
+                <div class="card-body text-left border border-dark" style="border: 5px solid black;border-radius: 10px;">
+                    <p style="text-align: right;" onclick="closeAcc(this)"> <i class="fa fa-times"></i></p>
+                    <ol>
+                        <li> Gender-based experiences appear to be negative for those who identify as female; creating an unsafe learning environment for female Lassonde students. How do we address this going forward?
+                        </li>
+                        <li> A familial imposed curfew prevented this student from engaging in social activities in Lassonde; how do we take that into consideration going forward?
+                        </li>
+                        <li> Meaning, and, possibly, purpose, appear to play a role in student experience. How to integrate this going forward?
+                        </li>
+                        <li> COVID increased feelings of isolation, however, eased some of the gender-based experiences (in some ways) - how can we maintain safe social engagement both online and in-person?
+                        </li>
+                    </ol>
+
+                </div>
+            </div>
+            <p></p>
+        </div>
+
+        <div class="border-0 col-md-6">
+            <div class="m-0 p-0 d-flex flex-column justify-content-between" id="heading_Four">
+                <span class="m-0">
+
+                    <img id="modal_four" onclick="showImageModal(this.id)" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/eclass_cc_persona_4%20%281%29.jpg" alt="Tobias" width="100%">
+
+                </span>
+                <button class="ccaccordion btn btn-default btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    <strong>Takeaways</strong> <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+
+            <div id="collapseFour" class="collapse" aria-labelledby="heading_Four" data-parent="#accordionImplement">
+                <p></p>
+                <div class="card-body text-left border border-dark" style="border: 5px solid black;border-radius: 10px;">
+                    <p style="text-align: right;" onclick="closeAcc(this)"> <i class="fa fa-times"></i></p>
+                    <ol>
+                        <li> Different mindsets between those who just got into Lassonde vs those who made the conscious and explicit decision to be there. How to design for these mindsets? Or do we pick one mindset to focus on?
+                        </li>
+                        <li> Students in the workplace already have a sense of skills that are most important. How can we engage these students to help facilitate more openness to "fluffy" courses in engineering?
+                        </li>
+                        <li>Even has someone who understands time management; still struggles with workload
+                        </li>
+                    </ol>
+
+                </div>
+            </div>
+            <p></p>
+        </div>
+        <div class="w-100"></div>
+        <div class="border-0 col-md-6">
+            <div class="m-0 p-0 d-flex flex-column justify-content-between" id="heading_Five">
+                <span class="m-0">
+
+                    <img id="modal_five" onclick="showImageModal(this.id)" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/eclass_cc_persona_5%20%281%29.jpg" alt="Rita" width="100%">
+
+                </span>
+                <button class="ccaccordion btn btn-default btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    <strong>Takeaways</strong> <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="heading_Five" data-parent="#accordionImplement">
+                <p></p>
+                <div class="card-body text-left border border-dark" style="border: 5px solid black;border-radius: 10px;">
+                    <p style="text-align: right;" onclick="closeAcc(this)"> <i class="fa fa-times"></i></p>
+                    <ol>
+                        <li> The impact of a heavy workload on student wellness
+                        </li>
+                        <li> The added pressure of self-learning and catching up; how can we help/ensure students that they're up to the same level as they need to be in class?
+                        </li>
+                        <li> How do we get students out of survival mode??</li>
+
+                    </ol>
+
+                </div>
+            </div>
+            <p></p>
+        </div>
+        <div class="border-0 col-md-6">
+            <div class="m-0 p-0 d-flex flex-column justify-content-between" id="heading_Six">
+                <span class="m-0">
+
+                    <img id="modal_six" onclick="showImageModal(this.id)" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/eclass_cc_persona_6%20%281%29.jpg" alt="Aryan" width="100%">
+
+                </span>
+                <button class="ccaccordion btn btn-default btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                    <strong>Takeaways</strong> <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+            <div id="collapseSix" class="collapse" aria-labelledby="heading_Six" data-parent="#accordionImplement">
+                <p></p>
+                <div class="card-body text-left border border-dark" style="border: 5px solid black;border-radius: 10px;">
+                    <p style="text-align: right;" onclick="closeAcc(this)"> <i class="fa fa-times"></i></p>
+                    <ol>
+                        <li>How to engage a student in social/extra-curriculars who is also working FT?
+                        </li>
+                        <li> Interestingly, it would appear that current state schedules suit someone who is already working FT, how might that affect the experience of a student who isn't accustomed to a work schedule?
+                        </li>
+                        <li> Working FT because he wasn't able to access financial support; support systems feel disorganized and difficult to access
+                        </li>
+                    </ol>
+
+                </div>
+            </div>
+            <p></p>
+        </div>
+        <div class="w-100"></div>
+        <div class="border-0 col-md-6">
+            <div class="m-0 p-0 d-flex flex-column justify-content-between" id="heading_Seven">
+                <span class="m-0">
+
+                    <img id="modal_seven" onclick="showImageModal(this.id)" src="https://eclass.yorku.ca/draftfile.php/13774/user/draft/247025142/eclass_cc_persona_7%20%281%29.jpg" alt="Alan" width="100%">
+
+                </span>
+                <button class="ccaccordion btn btn-default btn-link" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                    <strong>Takeaways</strong> <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+            <div id="collapseSeven" class="collapse" aria-labelledby="heading_Seven" data-parent="#accordionImplement">
+                <p></p>
+                <div class="card-body text-left border border-dark" style="border: 5px solid black;border-radius: 10px;">
+                    <p style="text-align: right;" onclick="closeAcc(this)"> <i class="fa fa-times"></i></p>
+                    <ol>
+                        <li> Don't underestimate the power of contextual learning and the role that spaces play in ones' learning experience
+                        </li>
+                        <li> Needs access to financial resources; struggling to balance between school, work, and real-life responsibilities
+                        </li>
+                        <li> Wants to make sure that his education is leading to a job
+                        </li>
+                    </ol>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
