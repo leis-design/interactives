@@ -40,9 +40,8 @@ function toggleBlue() {
 function profileModal() {
   toggleBlue();
 
-  document.getElementById("modal-img").children[0].src = document
-    .getElementById(idname)
-    .children(0).src;
+  document.getElementById("modal-img").children[0].src =
+    document.getElementById(idname).children[0].src;
   document.getElementById("modal-img").style.display = "block";
   modal.style.display = "block";
 }
